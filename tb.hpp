@@ -31,13 +31,13 @@ public:
     cnt++;
     to->clk = 0;
     to->eval();
-    trace->dump(10*cnt-2);
+    trace->dump((uint64_t)(10*cnt-2));
     to->clk = 1;
     to->eval();
-    trace->dump(10*cnt);
+    trace->dump((uint64_t)(10*cnt));
     to->clk = 0;
     to->eval();
-    trace->dump(10*cnt+5);
+    trace->dump((uint64_t)(10*cnt+5));
     trace->flush();
   }
-}
+};
