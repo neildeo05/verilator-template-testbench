@@ -1,3 +1,4 @@
+// Borrowed from <https://zipcpu.com/blog/2017/06/21/looking-at-verilator.html>
 #include <verilated_vcd_c.h>
 #include <cinttypes>
 template<class Module> class TB {
