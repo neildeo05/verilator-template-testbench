@@ -4,13 +4,12 @@ module top (
 
   input logic clk;
   logic foo;
-  logic bar;
-  initial begin
-    assign foo = 'b1;
-  end
+  // nice showcase to show how verilog works
   always @(posedge clk) begin
-    bar <= foo;
-    foo <= 0;
+    if (foo == 1'b0) begin
+      foo <= 0;
+    end
+    foo <= 1;
   end
 
 
