@@ -1,5 +1,4 @@
-// Borrowed from <https://zipcpu.com/blog/2017/06/21/looking-at-verilator.html>
-// Inspired from <https://itsembedded.com/dhd/verilator_4/>
+// Borrowed from <https://zipcpu.com/blog/2017/06/21/looking-at-verilator.html> and <https://itsembedded.com/dhd/verilator_4/>
 #include <verilated_vcd_c.h>
 #include <deque>
 #include <stdio.h>
@@ -9,6 +8,8 @@
 #include <cinttypes>
 #define PCT_GEN 4
 #define SEED 1337
+#define DEBUG 1
+#define COVER 0
 
 struct InputTx {
   // Define Inputs to module
@@ -22,6 +23,7 @@ struct OutputTx {
   uint32_t out;
   unsigned int* fifo;
 };
+
 
 
 InputTx* create_input_tx() {
@@ -38,6 +40,7 @@ InputTx* create_input_tx() {
   else return NULL;
 }
 
+#define debug(...) if(DEBUG) printf(__VA_ARGS__);
 
 struct Scoreboard {
   std::deque<InputTx*> inputs;
@@ -49,21 +52,26 @@ struct Scoreboard {
   void output_write(OutputTx* output_value) {
     assert(!inputs.empty());
     InputTx* in = inputs.front();
-    // This is used to delay the transactions to make sure they line up
+    // Since the inputs are delivered per rising edge, we expect output to show up on the next rising edge, thats why we need to delay the first input
+    // until actual outputs are being received.
     if(!delay_flag) {
       delay_flag = 1;
       delete output_value;
     } else {
-      printf("========== PACKET START ==========\n");
-      printf("R/W -> %d\n", in->r_w);
-      printf("Enable -> %d\n", in->en);
-      printf("Input -> %d\n", in->in);
-      printf("Output -> %d\n", output_value->out);
+      debug("========== PACKET PRINTOUT START ==========\n");
+      debug("R/W -> %d\n", in->r_w);
+      debug("Enable -> %d\n", in->en);
+      debug("Input -> %d\n", in->in);
+      debug("Output -> %d\n", output_value->out);
       for(int i = 0; i < 8; i++) {
-        std::cout << "fifo[" << i << "]: " << output_value->fifo[i] << " ";
+        debug("fifo[%d]: %d ", i, output_value->fifo[i]);
       }
-      std::cout << std::endl;
-      printf("========== PACKET  END  ==========\n");
+      debug("\n");
+      debug("========== PACKET PRINTOUT  END  ==========\n");
+      debug("\n\n\n");
+      //debug("========== EVALUATION BEGIN  ==========\n");
+      // This is the space to evaluate whether the packets are correct or not
+      //debug("========== EVALUATION END  ==========\n");
       inputs.pop_front();
       delete in;
       delete output_value;

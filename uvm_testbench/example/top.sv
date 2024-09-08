@@ -29,7 +29,10 @@ module top (
         end else if (r_w & !full) begin
           wptr <= wptr + 3'd1;
           fifo[wptr] <= in;
+          out <= 3'b0;
         end
+      end else begin
+        out <= 3'b0;
       end
     end
   end
