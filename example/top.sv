@@ -3,13 +3,11 @@ module top (
 );
 
   input logic clk;
-  logic foo;
+  logic [7:0] shr;
   // nice showcase to show how verilog works
   always @(posedge clk) begin
-    if (foo == 1'b0) begin
-      foo <= 0;
-    end
-    foo <= 1;
+    shr <= shr << 1;
+    shr[0] <= clk;
   end
 
 

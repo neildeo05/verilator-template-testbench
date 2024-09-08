@@ -18,10 +18,10 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__0(Vtop___024root* vlSelf) 
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___nba_sequent__TOP__0\n"); );
     // Body
-    if ((1U & (~ (IData)(vlSelf->top__DOT__foo)))) {
-        vlSelf->top__DOT__foo = 0U;
-    }
-    vlSelf->top__DOT__foo = 1U;
+    vlSelf->top__DOT__shr = (0xffU & ((IData)(vlSelf->top__DOT__shr) 
+                                      << 1U));
+    vlSelf->top__DOT__shr = ((0xfeU & (IData)(vlSelf->top__DOT__shr)) 
+                             | (IData)(vlSelf->clk));
 }
 
 void Vtop___024root___eval_nba(Vtop___024root* vlSelf) {
